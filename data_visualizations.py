@@ -8,23 +8,6 @@ import numpy as np
 
 from geopy.geocoders import GoogleV3
 
-def save_to_csv(data, file_name):
-    '''
-    A helper function that saves a dataframe to csv.
-
-    Parameters
-    ----------
-    data : A pandas dataframe
-    file_name : Name for storing the csv file
-
-    Returns
-    -------
-    A csv named file_name
-    '''
-
-    data.to_csv(f'data/{file_name}.csv', index=False)
-
-
 def determine_covid(date):
     '''
     A helper fucntion that takes in a date and returns a value of 0 or 1 if the
@@ -491,7 +474,7 @@ def dataframe_for_tableau(zip_code_location_divvy_stations, all_data_with_lat_lo
                              axis=1)
 
     # Save file as csv to upload into Tableau
-    save_to_csv(all_data, 'all_data')
+    all_data.to_csv(r'all_data.csv', index=False)
 
 def main():
     '''

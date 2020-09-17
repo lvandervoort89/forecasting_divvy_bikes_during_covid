@@ -120,6 +120,13 @@ def final_model(dataframe):
     dataframe['phase_three'] = dataframe['ds'].apply(is_phase_three)
     dataframe['not_phase_three'] = ~dataframe['ds'].apply(is_phase_three)
 
+    # Split train and test data
+    start_date = pd.Timestamp(2020, 8, 1)
+    last_date = pd.Timestamp(2020, 12, 31)
+
+    cross_val_data = dataframe[(dataframe.ds < start_date)]
+    test_data = dataframe[(dataframe.ds >= start_date) & (dataframe.ds <= last_date)]
+
     # Run model
     prophet = Prophet(daily_seasonality=False, weekly_seasonality=False, yearly_seasonality=False,
                       seasonality_prior_scale=20, changepoint_prior_scale=0.2)
@@ -127,22 +134,22 @@ def final_model(dataframe):
     prophet.add_seasonality(name='covid', period=7, fourier_order=10, condition_name='covid')
     prophet.add_seasonality(name='precovid', period=7, fourier_order=3, condition_name='precovid')
     prophet.add_seasonality(
-        name='phase_one', period=365.25, fourier_order=20, condition_name='phase_one')
+        name='phase_one', period=365.25, fourier_order=5, condition_name='phase_one')
     prophet.add_seasonality(
-        name='not_phase_one', period=365.25, fourier_order=3, condition_name='not_phase_one')
+        name='not_phase_one', period=365.25, fourier_order=5, condition_name='not_phase_one')
     prophet.add_seasonality(
-        name='phase_two', period=365.25, fourier_order=3, condition_name='phase_two')
+        name='phase_two', period=365.25, fourier_order=5, condition_name='phase_two')
     prophet.add_seasonality(
-        name='not_phase_two', period=365.25, fourier_order=3, condition_name='not_phase_two')
+        name='not_phase_two', period=365.25, fourier_order=5, condition_name='not_phase_two')
     prophet.add_seasonality(
-        name='phase_three', period=365.25, fourier_order=10, condition_name='phase_three')
+        name='phase_three', period=365.25, fourier_order=5, condition_name='phase_three')
     prophet.add_seasonality(
-        name='not_phase_three', period=365.25, fourier_order=3, condition_name='not_phase_three')
+        name='not_phase_three', period=365.25, fourier_order=5, condition_name='not_phase_three')
     prophet.add_country_holidays(country_name='US')
 
-    prophet.fit(dataframe)
+    prophet.fit(cross_val_data)
 
-    future = prophet.make_future_dataframe(periods=122)
+    future = prophet.make_future_dataframe(periods=153)
     future['covid'] = future['ds'].apply(is_covid)
     future['precovid'] = ~future['ds'].apply(is_covid)
     future['phase_one'] = future['ds'].apply(is_phase_one)
@@ -152,7 +159,9 @@ def final_model(dataframe):
     future['phase_three'] = future['ds'].apply(is_phase_three)
     future['not_phase_three'] = ~future['ds'].apply(is_phase_three)
 
-    forecast = prophet.predict(future)
+    test_data = future[(future.ds >= start_date) & (future.ds <= last_date)]
+
+    forecast = prophet.predict(test_data)
 
     cv_results = cross_validation(
         prophet, initial='730 days', period='180 days', horizon='122 days')

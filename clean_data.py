@@ -6,23 +6,6 @@ tables are saved as a csv file.
 from sqlalchemy import create_engine
 import pandas as pd
 
-def save_to_csv(data, file_name):
-    '''
-    A helper function that saves a dataframe to csv.
-
-    Parameters
-    ----------
-    data : A pandas dataframe
-    file_name : Name for storing the csv file
-
-    Returns
-    -------
-    A csv named file_name
-    '''
-
-    data.to_csv(f'{file_name}.csv', index=False)
-
-
 def sql_to_dataframe():
     '''
     A function that connects to a local PostgreSQL database and queries Divvy
@@ -151,14 +134,13 @@ def clean_and_engineer_dataframes(all_data_2020, all_data_2019, all_data_2018, a
         columns={'month': 'number_daily_rides'})
 
     # Save dataframes to csv files
-    save_to_csv(all_data_2020, 'all_data_2020')
-    save_to_csv(all_data_2019, 'all_data_2019')
-    save_to_csv(all_data_2018, 'all_data_2018')
-    save_to_csv(all_data_2017, 'all_data_2017')
+    all_data_2020.to_csv(r'all_data_2020.csv', index=False)
+    all_data_2019.to_csv(r'all_data_2019.csv', index=False)
+    all_data_2018.to_csv(r'all_data_2018.csv', index=False)
+    all_data_2017.to_csv(r'all_data_2017.csv', index=False)
 
     # Save daily dataframe
-    save_to_csv(daily_df_2017_to_2020, 'daily_df_2017_to_2020')
-
+    daily_df_2017_to_2020.to_csv(r'daily_df_2017_to_2020.csv', index=False)
 
 def main():
     '''
