@@ -17,7 +17,7 @@ Divvy bike share data is cleaned and aggregated at the daily level. A time serie
 Divvy bike share data was obtained from the [City of Chicago Data Portal](https://divvy-tripdata.s3.amazonaws.com/index.html) from January 1, 2017-August 31, 2020.
 
 ## **Results Summary:**
-A Facebook Prophet time series model was optimized to have an average MAE of 2273.6 and average RMSE of 3002.7 across the forecast period. The optimized model with Covid-19 seasonality was better able to capture the sharp decrease in ride share demand at the beginning of shut down and the unique spike during the phases of reopening. It was also found that during Covid-19, weekends are uniquely popular (as compared to pre-covid) for bike rental. Additionally, while bike share demand dropped significantly at the start of shutdown, summer demand has been comparable, if not a bit higher, than previous years.
+A Facebook Prophet time series model was optimized to have an average MAE of 2752.7 and average RMSE of 3550.4 across the forecast period. The optimized model with Covid-19 seasonality was better able to capture the sharp decrease in ride share demand at the beginning of shut down and the unique spike during the phases of reopening. It was also found that during Covid-19, weekends are uniquely popular (as compared to pre-covid) for bike rental. Additionally, while bike share demand dropped significantly at the start of shutdown, summer demand has been comparable to previous years.
 
 ## **Tableau Visualizations:**
 A Tableau dashboard was built to display the unique trends and shifts in demand for Divvy bikes during the Chicago phases of reopening.
